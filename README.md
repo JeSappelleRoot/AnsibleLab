@@ -1,29 +1,26 @@
-
-
-<!-- vim-markdown-toc GitLab -->
-
-* [AnsibleLAB](#ansiblelab)
-* [Ansible inventory](#ansible-inventory)
-* [Ansible container](#ansible-container)
-	* [SSH private and public keys handling](#ssh-private-and-public-keys-handling)
-	* [SSH key sharing between containers](#ssh-key-sharing-between-containers)
-	* [Ignore key checking](#ignore-key-checking)
-	* [Playbook handling](#playbook-handling)
-
-<!-- vim-markdown-toc -->
+- [AnsibleLAB](#ansiblelab)
+- [Ansible inventory](#ansible-inventory)
+- [Ansible container](#ansible-container)
+	- [SSH private and public keys handling](#ssh-private-and-public-keys-handling)
+	- [SSH key sharing between containers](#ssh-key-sharing-between-containers)
+	- [Ignore key checking](#ignore-key-checking)
+	- [Playbook handling](#playbook-handling)
+	- [Role handling](#role-handling)
 
 # AnsibleLAB
 
 This Docker Compose environment provide a quick and temporary environment to test Ansible playbooks on several Unix system : 
 - CentOS 7  
 - Debian 9  
-- Ubuntu 18.04  
+- Ubuntu 20.04  
 - Fedora 33 
 - Alma Linux 8.4  
 
+**All these versions are defined in `.env` file to easily change versions if needed, feel free to adjust this environment file to match your requirements**
+> Keep in mind that changing base image version could break the nodes docker builds
+
 The Docker Compose file will generate 3 hosts for each OS family, then you will have 12 hosts and the Ansible instance. 
 Ansible will handle the connection with a custom SSH private key, the public key will be shared between containers.  
-
 
 
 # Ansible inventory
@@ -39,8 +36,8 @@ Default root password is `root` and can be used to perform an SSH connection to 
 ## SSH private and public keys handling
 
 In `./ansible/Dockerfile`, you can find the Ansible container build. You can notice that there is a multi-stage build :  
-- the 1st build is reponsible of the SSH keys creation, ed25519 key type, without password
-- the 2nd build is responsible of the Ansible installation and Ansible quick configuration.
+- the 1st build will handle the SSH keys creation, ed25519 key type, without password
+- the 2nd build will hande the Ansible installation and Ansible quick configuration.
 
 SSH keys are copied to `/etc/ansible/SSH` folder at the end of the Ansible container build.
 
@@ -61,5 +58,9 @@ To avoid fingerprint checking by Ansible, we are adding the environment variable
 Playbooks will be handled by the folder `./playbooks`, this local folder will be mounted in Ansible container under `/etc/ansible/playbooks`.  
 Then, you will be able to work in your playbooks locally and check the execution with the Ansible container.  
 
+## Role handling
+
+Roles will be handled by the folder `./roles`, this local folder will be mounted in Ansible container under `/etc/ansible/roles`.  
+This will provide the same way as playbook folder
 
 
