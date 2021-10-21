@@ -1,0 +1,14 @@
+[centos]
+centos_[1:3]
+
+[debian]
+debian[1:3]
+
+[ubuntu]
+ubuntu[1:3]
+
+[fedora]
+fedora[1:3]
+
+[almalinux]
+almalinux[1:3]
