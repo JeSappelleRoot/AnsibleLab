@@ -1,0 +1,232 @@
+version: "3.9"
+
+services:
+
+  ansible:
+    hostname: ansible
+    build:
+      context: ./ansible
+      args:
+        - VERSION_DEBIAN_ANSIBLE=$VERSION_DEBIAN_ANSIBLE
+    volumes:
+      - ./ansible_inventory:/etc/ansible/hosts:ro
+      - ./playbooks:/etc/ansible/playbooks
+      - ./roles:/etc/ansible/roles
+      - type: volume
+        source: ssh_sharing
+        target: /etc/ansible/SSH
+
+    depends_on:
+      - centos1
+      - centos2
+      - centos3
+      - debian1
+      - debian2
+      - debian3
+      - ubuntu1
+      - ubuntu2
+      - ubuntu3
+      - fedora1
+      - fedora2
+      - fedora3
+      - almalinux1
+      - almalinux2
+      - almalinux3
+
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=False
+
+    stdin_open: true
+    tty: true
+
+#
+# -------- CentOS --------
+#
+  centos1:
+    hostname: centos1  
+    build:
+      context: ./nodes/centos
+      args:
+        - VERSION_CENTOS=$VERSION_CENTOS
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  centos2:
+    hostname: centos2
+    build:
+      context: ./nodes/centos
+      args:
+        - VERSION_CENTOS=$VERSION_CENTOS      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  centos3:
+    hostname: centos3
+    build:
+      context: ./nodes/centos
+      args:
+        - VERSION_CENTOS=$VERSION_CENTOS      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+#
+# -------- Debian --------
+#
+        
+  debian1:
+    hostname: debian1  
+    build:
+      context: ./nodes/debian
+      args:
+        - VERSION_DEBIAN=$VERSION_DEBIAN
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  debian2:
+    hostname: debian2
+    build:
+      context: ./nodes/debian
+      args:
+        - VERSION_DEBIAN=$VERSION_DEBIAN      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh        
+
+  debian3:
+    hostname: debian3
+    build:
+      context: ./nodes/debian
+      args:
+        - VERSION_DEBIAN=$VERSION_DEBIAN      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh                
+
+#
+# -------- Ubuntu --------
+#
+
+  ubuntu1:
+    hostname: ubuntu1
+    build:
+      context: ./nodes/ubuntu
+      args:
+        - VERSION_UBUNTU=$VERSION_UBUNTU
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+        
+  ubuntu2:
+    hostname: ubuntu2
+    build:
+      context: ./nodes/ubuntu
+      args:
+        - VERSION_UBUNTU=$VERSION_UBUNTU      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  ubuntu3:
+    hostname: ubuntu3
+    build:
+      context: ./nodes/ubuntu
+      args:
+        - VERSION_UBUNTU=$VERSION_UBUNTU      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+#
+# -------- Fedora --------
+#
+  fedora1:
+    hostname: fedora1
+    build:
+      context: ./nodes/fedora
+      args: 
+        - VERSION_FEDORA=$VERSION_FEDORA
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  fedora2:
+    hostname: fedora2
+    build:
+      context: ./nodes/fedora
+      args: 
+        - VERSION_FEDORA=$VERSION_FEDORA      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+  fedora3:
+    hostname: fedora3
+    build:
+      context: ./nodes/fedora
+      args: 
+        - VERSION_FEDORA=$VERSION_FEDORA      
+    volumes:
+      - type: volume
+        source: ssh_sharing
+        target: /root/.ssh
+
+
+#
+# -------- AlmaLinux --------
+#
+
+  almalinux1:
+      hostname: almalinux1
+      build:
+        context: ./nodes/almalinux
+        args:
+          - VERSION_ALMALINUX=$VERSION_ALMALINUX
+      volumes:
+        - type: volume
+          source: ssh_sharing
+          target: /root/.ssh
+
+  almalinux2:
+      hostname: almalinux2
+      build:
+        context: ./nodes/almalinux
+        args:
+          - VERSION_ALMALINUX=$VERSION_ALMALINUX        
+      volumes:
+        - type: volume
+          source: ssh_sharing
+          target: /root/.ssh        
+
+  almalinux3:
+      hostname: almalinux3
+      build:
+        context: ./nodes/almalinux
+        args:
+          - VERSION_ALMALINUX=$VERSION_ALMALINUX        
+      volumes:
+        - type: volume
+          source: ssh_sharing
+          target: /root/.ssh
+
+
+#
+# -------- Volumes --------
+#
+
+volumes:
+  ssh_sharing:
