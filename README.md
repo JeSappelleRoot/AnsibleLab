@@ -1,5 +1,7 @@
 - [AnsibleLAB](#ansiblelab)
+	- [Quick demo](#quick-demo)
 - [Ansible inventory](#ansible-inventory)
+	- [Groups](#groups)
 - [Ansible container](#ansible-container)
 	- [SSH private and public keys handling](#ssh-private-and-public-keys-handling)
 	- [SSH key sharing between containers](#ssh-key-sharing-between-containers)
@@ -22,11 +24,91 @@ This Docker Compose environment provide a quick and temporary environment to tes
 The Docker Compose file will generate 3 hosts for each OS family, then you will have 12 hosts and the Ansible instance. 
 Ansible will handle the connection with a custom SSH private key, the public key will be shared between containers.  
 
+## Quick demo
+
+You can clone this repository and launch the AnsibleLab with `docker-compose up`  or `docker-compose up -d` if you prefer background execution.  
+Then, you can use the ansible `ping` module to check the connectivity via docker-compose exec or directly from a /bin/bash on ansible container  : 
+
+```
+# ~ docker-compose exec ansible ansible -m ping all
+
+centos1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+centos2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+debian1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+debian2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+debian3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+centos3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+fedora1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+fedora3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+fedora2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+almalinux3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+almalinux2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+almalinux1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
 
 # Ansible inventory
 
 The inventory is handled by the file named `ansible_inventory` and will be mounted on Ansible container to under /etc/ansible/hosts with Read-Only permissions.  
 Groups are defined in this file and can be easily edited
+
+## Groups
+
+You have different groups predefined in the inventory : 
+- `centos`
+- `ubuntu`
+- `debian`
+- `fedora`
+- `almalinux`
+
+Feel free to modify these groups to match your requirements
 
 # Ansible container
 
